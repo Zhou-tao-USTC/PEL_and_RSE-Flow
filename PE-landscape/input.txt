@@ -1,0 +1,9 @@
+csv_file_name = DPMD_PES_spillover_input.csv
+start_point = [6.2, 5.0, 9.1]
+end_point = [3.4, 9.1, 9.0]
+initial_energy_limit = -45579.9
+step_size = 0.04
+final_step_size_limit = 0.005
+grid_type = cubic
+cpu_number = 16
+init_data_batch = 100
