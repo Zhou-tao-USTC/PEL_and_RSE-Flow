@@ -1,0 +1,104 @@
+{
+    "model": {
+        "use_srtab": "../../../O_Al_H_zbl.txt",
+        "smin_alpha": 0.1,
+        "sw_rmin": 0.5,
+        "sw_rmax": 0.9,
+        "descriptor": {
+            "type": "se_e2_a",
+            "sel": "auto",
+            "rcut_smth": 0.5,
+            "rcut": 6.0,
+            "_comment2": "modify according your system",
+            "neuron": [
+                25,
+                50,
+                100
+            ],
+            "resnet_dt": false,
+            "seed": 1939118223,
+            "precision": "float32"
+        },
+        "fitting_net": {
+            "neuron": [
+                240,
+                240,
+                240
+            ],
+            "resnet_dt": true,
+            "seed": 1064746525,
+            "precision": "float32"
+        },
+        "type_map": [
+            "O",
+            "Al",
+            "H"
+        ]
+    },
+    "learning_rate": {
+        "type": "exp",
+        "start_lr": 0.001,
+        "decay_steps": 4000,
+        "_comment3": "nope",
+        "stop_lr": 3.51e-08
+    },
+    "loss": {
+        "start_pref_e": 0.02,
+        "limit_pref_e": 1,
+        "start_pref_f": 1000,
+        "limit_pref_f": 1,
+        "start_pref_v": 0,
+        "limit_pref_v": 0
+    },
+    "training": {
+        "numb_steps": 800000,
+        "seed": 274989148,
+        "disp_file": "lcurve.out",
+        "disp_freq": 100,
+        "save_freq": 1000,
+        "save_ckpt": "model.ckpt",
+        "disp_training": true,
+        "time_training": true,
+        "profiling": false,
+        "profiling_file": "timeline.json",
+        "training_data": {
+            "systems": [
+                "../../../init_data/X0_Y0_data_aimd_cpu_3_shuguang",
+                "../../../init_data/X1_Y1_data_aimd_cpu_3_shuguang",
+                "../../../init_data/X0_Y0_data_iter_0_cpu_3_shuguang",
+                "../../../init_data/X1_Y1_data_iter_0_cpu_3_shuguang",
+                "../../../init_data/iter_0_data.000",
+                "../../../init_data/iter_0_data.001",
+                "../../../init_data/iter_1_data.001",
+                "../../../init_data/iter_1_data.000",
+                "../../../init_data/iter_2_data.000",
+                "../../../init_data/iter_2_data.001",
+                "../../../init_data/iter_3_data.000",
+                "../../../init_data/iter_3_data.001",
+                "../../../init_data/iter_4_data.000",
+                "../../../init_data/iter_4_data.001",
+                "../../../init_data/iter_5_data.001",
+                "../../../init_data/iter_5_data.000"
+            ],
+            "set_prefix": "set",
+            "batch_size": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ]
+        }
+    }
+}

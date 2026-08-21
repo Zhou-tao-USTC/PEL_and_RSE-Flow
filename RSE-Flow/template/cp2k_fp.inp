@@ -1,0 +1,117 @@
+&GLOBAL
+  PROJECT input
+  PRINT_LEVEL MEDIUM
+  RUN_TYPE ENERGY_FORCE
+&END GLOBAL
+
+&FORCE_EVAL
+  &SUBSYS
+    &CELL
+      A 16.8260 0.0000 0.0000
+      B 0.0000 16.1360 0.0000
+      C 0.0000 0.0000 19.3465
+    &END CELL
+    &COORD
+      @INCLUDE coord.xyz
+    &END COORD
+    &KIND O
+      ELEMENT O
+      BASIS_SET DZVP-MOLOPT-SR-GTH-q6
+      POTENTIAL GTH-PBE-q6
+    &END KIND
+    &KIND Al
+      ELEMENT Al
+      BASIS_SET DZVP-MOLOPT-SR-GTH-q3
+      POTENTIAL GTH-PBE-q3
+    &END KIND
+    &KIND H
+      ELEMENT H
+      BASIS_SET DZVP-MOLOPT-SR-GTH-q1
+      POTENTIAL GTH-PBE-q1
+    &END KIND
+  &END SUBSYS
+  METHOD Quickstep
+# STRESS_TENSOR ANALYTICAL
+  &DFT
+	BASIS_SET_FILE_NAME  BASIS_MOLOPT
+    POTENTIAL_FILE_NAME  GTH_POTENTIALS
+#   WFN_RESTART_FILE_NAME Cu_cellopt-RESTART.wfn
+    CHARGE    0 #Net charge
+#   UKS T
+#   ROKS T
+#   MULTIPLICITY    1 #Spin multiplicity
+#   RELAX_MULTIPLICITY    1 #Spin multiplicity
+#   PLUS_U_METHOD
+    SURFACE_DIPOLE_CORRECTION T
+    SURF_DIP_DIR Z	
+#   EXCITATIONS TDDFPT
+    &QS
+      EPS_DEFAULT 1.0E-10 #Set all EPS_xxx to values such that the energy will be correct up to this value
+	  EXTRAPOLATION ASPC
+	  EXTRAPOLATION_ORDER 3
+	  METHOD GPW
+    &END QS
+    &POISSON
+      PERIODIC XYZ #Direction(s) of PBC for calculating electrostatics
+      PSOLVER PERIODIC #The way to solve Poisson equation
+    &END POISSON
+    &MGRID
+      NGRIDS 4
+	  CUTOFF 800
+      REL_CUTOFF 60
+    &END MGRID
+    &XC
+      &XC_FUNCTIONAL
+        &PBE
+          PARAMETRIZATION PBESOL
+        &END PBE
+	  &END XC_FUNCTIONAL
+      &vdW_POTENTIAL
+        POTENTIAL_TYPE PAIR_POTENTIAL
+        &PAIR_POTENTIAL
+          TYPE DFTD3
+          PARAMETER_FILE_NAME dftd3.dat
+          REFERENCE_FUNCTIONAL PBESOL
+          R_CUTOFF [angstrom] 12
+#           CALCULATE_C9_TERM TRUE
+#           REFERENCE_C9_TERM TRUE
+        &END PAIR_POTENTIAL
+      &END vdW_POTENTIAL
+    &END XC
+    &SCF
+#     SCF_GUESS RESTART #Use wavefunction from WFN_RESTART_FILE_NAME file as initial guess
+      IGNORE_CONVERGENCE_FAILURE T #Continue calculation even if SCF not converged, works for version >= 2024.1
+      EPS_SCF 1.0E-05 #Convergence threshold of density matrix of inner SCF
+      MAX_SCF 240
+      &PRINT
+        &RESTART OFF #Note: Use "&RESTART OFF" can prevent generating .wfn file
+          BACKUP_COPIES 0 #Maximum number of backup copies of wfn file. 0 means never
+        &END RESTART
+      &END PRINT
+      &OT T
+        MINIMIZER CG
+		LINESEARCH 2PNT
+		PRECONDITIONER FULL_ALL
+		ALGORITHM IRAC
+      &END OT
+	  &OUTER_SCF T
+	    EPS_SCF 1.0E-05
+		MAX_SCF 1
+	  &END OUTER_SCF
+    &END SCF
+  &END DFT
+  &PRINT
+    &STRESS_TENSOR ON #Print stress tensor
+    &END STRESS_TENSOR
+    &FORCES
+    &END FORCES
+  &END PRINT
+&END FORCE_EVAL
+
+#&MOTION
+#  &CONSTRAINT
+#    &FIXED_ATOMS
+#      LIST 1..48 97..128
+#    &END FIXED_ATOMS
+#  &END CONSTRAINT
+#&END MOTION

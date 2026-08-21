@@ -1,0 +1,82 @@
+[general]
+initial_structure = ../../../X0_Y0.vasp #初始结构文件路径（VASP格式的CONTCAR文件）
+force_model_type = deepmd_v3 #力场模型类型（如 deepmd_v2，支持未来扩展）
+force_model_path = ./graph.pb #力场模型文件路径（如 DeepMD 的 graph.pb）
+cold_start_correct = FALSE #是否启用冷启动修正（TRUE/FALSE）
+cpu = 64 #使用的CPU核心数量（并行计算设置）
+verbose = TRUE  # 启用详细日志
+
+[constraint]
+constraint_type = XYZ #约束类型,可以是：XYZ: 仅约束笛卡尔坐标;IRC: 仅约束反应坐标（键长/键角）;XYZ_IRC: 同时约束笛卡尔坐标和反应坐标
+
+[xyz_constraints] #定义笛卡尔坐标约束,每行格式：索引 = 约束类型, 参数, [可选参数]
+set1_atoms = 0-47, 96-127
+set1_type = FixCartesian
+set1_mask = [1,1,1]
+
+#[irc_constraints]
+#set1_type = FixInternals_bond
+#set1_atoms = 161,162
+#set1_value = 1.42  # 固定值
+#set2_type = FixInternals_angle
+#set2_atoms = 158,159,160
+#set2_value = 120.0  # 角度值
+
+[avoid]
+avoid_group_atoms = 48-95,128-160  # 需要避免接触的原子组
+avoid_distance = 0.9             # 最小允许距离（单位：埃）
+
+[optimization]  #结构优化设置
+optimizer =  SciPyFminCG  #优化算法选择（BFGSLineSearch, BFGS, LBFGS, FIRE, SciPyFminCG等）
+fmax = 0.05 #力收敛阈值（单位：eV/Å）
+max_steps = 0 #最大优化步数
+
+[scan]
+scan_dimension = 3 # 扫描维度
+#refinement_factor = 0.5 #网格细化因子
+#min_grid_scale = 0.01 
+
+#维度1 - X约束
+dim1_type = XYZ
+dim1_atom = 161
+dim1_axis = X
+dim1_init = 6.0
+dim1_final = 8.8
+dim1_step = 0.7
+dim1_name = atom_H_x
+
+#维度2 - Y约束
+dim2_type = XYZ
+dim2_atom = 161
+dim2_axis = Y
+dim2_init = 4.8  # y方向起始值(Å)
+dim2_final = 7.3  # y方向结束值(Å)
+dim2_step = 0.5
+dim2_name = atom_H_y  # y方向名称
+
+#维度3 - Z约束
+dim3_type = XYZ
+dim3_atom = 161
+dim3_axis = Z
+dim3_init = 7.8  # z方向起始值(Å)
+dim3_final = 9.8  # z方向结束值(Å)
+dim3_step = 0.5
+dim3_name = atom_H_z  # z方向名称
+
+#维度1 - IRC键长
+#dim1_type = IRC_bond
+#dim1_atoms = 160,161
+#dim1_init = 0.74
+#dim1_final = 1.54
+#dim1_step = 0.1
+#dim1_name = bond_H_H
+
+[output]
+trajectory = TRUE #是否输出轨迹文件
+format = vasp #轨迹文件格式（vasp, xyz, cif等）
+trajectory_dir = ./traj #轨迹文件输出目录
+result_file = relaxed_scan.csv #扫描结果CSV文件名
+log_skipped_points = TRUE #是否记录跳过的点
+skipped_points_file = skipped_points.csv #跳过的点的日志文件
+output_final_structure = TRUE #是否输出最终结构
+final_structure_file = final_structure.vasp #最终结构文件名
