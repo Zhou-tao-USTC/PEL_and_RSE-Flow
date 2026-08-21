@@ -1,0 +1,72 @@
+{
+    "pretrained_model": null,
+    "non_zero_start": true,
+    "iter_start": 11,
+    "stage_start": 7,
+
+    "rigid_scan_init_data_method": false,
+    "rigid_scan_input": "./templates/rigid_scan_input_0.txt",
+    "rigid_scan_mlp": "./templates/graph.pb",
+    "pre_scan_structures": "delete",
+
+    "deepmd_version": "v2",
+    "deepmd_type": "deepmd-kit_v2",
+    "deepmd_slurm_templates": [
+        "./templates/deepmd_0.slurm",
+        "./templates/deepmd_1.slurm",
+        "./templates/deepmd_2.slurm",
+        "./templates/deepmd_3.slurm"
+    ],
+
+    "deepmd_input_deepmd-kit_v2": [
+        "./templates/input_0.json",
+        "./templates/input_1.json",
+        "./templates/input_2.json",
+        "./templates/input_3.json"
+    ],
+    
+    "relaxed_scan_input": "./templates/input.txt",
+    "relaxed_scan_slurm": "./templates/relaxed_scan_hetero.slurm",
+    "relaxed_scan_traj_dirs": ["traj_C", "traj_B"],
+
+    "model_devi_f_trust_lo": 0.12,
+    "model_devi_f_trust_hi": 0.25,
+    
+    "convergence": {
+        "accurate_ratio": 0.90,
+        "max_iterations": 12
+    },
+    
+    "traj_format": "vasp",
+    
+    "DFT_type": "CP2K",
+    "DFT_batch_size": 20,
+    "dft_code": "cp2k",
+    "DFT_input_CP2K": [
+        "./templates/cp2k_fp.inp"
+    ],
+    "DFT_sub_CP2K": "./templates/cp2k.slurm",
+    
+    "initial_dataset": [
+        "../init_data/X0_Y0_data_aimd_cpu_3_shuguang",
+        "../init_data/X1_Y1_data_aimd_cpu_3_shuguang",
+        "../init_data/X0_Y0_data_iter_0_cpu_3_shuguang",
+        "../init_data/X1_Y1_data_iter_0_cpu_3_shuguang",
+        "../init_data/iter_0_data.000",
+        "../init_data/iter_0_data.001",
+        "../init_data/iter_1_data.001",
+        "../init_data/iter_1_data.000",
+        "../init_data/iter_2_data.000",
+        "../init_data/iter_2_data.001",
+        "../init_data/iter_3_data.000",
+        "../init_data/iter_3_data.001",
+        "../init_data/iter_4_data.000",
+        "../init_data/iter_4_data.001",
+        "../init_data/iter_5_data.001",
+        "../init_data/iter_5_data.000"
+    ],
+    "logging": {
+        "level": "INFO",
+        "file": "relaxed_scan_explore_mlp.log"
+    }
+}
