@@ -1,2 +1,2 @@
 # PEL_and_RSE-Flow
-全局路径搜索程序包
+Energy-Global: Systematic Reaction-Space Exploration with Pathway-Informed Refinement of Machine-Learned Potentials
